@@ -39,7 +39,7 @@ def init_gsheets():
         )
         client = gspread.authorize(creds)
 
-        return client.open_by_key(
+        return client.open_by_key(https://docs.google.com/spreadsheets/d/1tSnjFCjfR3_j8OeQP2nzS8IUgPO6tpeV6G3p5mtJraI/edit?usp=sharing)
             "1tSnjFCjfR3_j80eQP2nzS8IUgP06tpeV6G3p5mtJraI"
         )
 
@@ -120,5 +120,6 @@ else:
             st.dataframe(df, use_container_width=True)
         except:
             st.warning("Tab 'Data Active' tidak ditemukan.")
+
 
 
