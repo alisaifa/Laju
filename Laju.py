@@ -29,13 +29,22 @@ def apply_theme(mode):
 # --- DATABASE CONNECTION ---
 def init_gsheets():
     try:
-        scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-        # Mengambil kredensial dari st.secrets
-        creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["gcp_service_account"], scope)
+        scope = [
+            "https://spreadsheets.google.com/feeds",
+            "https://www.googleapis.com/auth/drive"
+        ]
+
+        creds = ServiceAccountCredentials.from_json_keyfile_dict(
+            st.secrets["gcp_service_account"], scope
+        )
         client = gspread.authorize(creds)
-        # Baris 37 yang sudah diperbaiki (tanpa double kurung)
-        return client.open_by_url("https://docs.google.com/spreadsheets/d/1tSnjFCjfR3_j8OeQP2nzS8IUgPO6tpeV6G3p5mtJraI/edit?usp=sharing")
+
+        return client.open_by_key(
+            "1tSnjFCjfR3_j80eQP2nzS8IUgP06tpeV6G3p5mtJraI"
+        )
+
     except Exception as e:
+        st.error(e)
         return None
 
 # Definisi Global
@@ -111,4 +120,5 @@ else:
             st.dataframe(df, use_container_width=True)
         except:
             st.warning("Tab 'Data Active' tidak ditemukan.")
+
 
