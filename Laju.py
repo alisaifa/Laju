@@ -29,13 +29,22 @@ def apply_theme(mode):
 # --- DATABASE CONNECTION ---
 def init_gsheets():
     try:
-        scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+        scope = [
+            "https://spreadsheets.google.com/feeds",
+            "https://www.googleapis.com/auth/drive"
+        ]
         # Mengambil kredensial dari st.secrets
-        creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["gcp_service_account"], scope)
+        creds = ServiceAccountCredentials.from_json_keyfile_dict(
+            st.secrets["gcp_service_account"], scope
+        )
         client = gspread.authorize(creds)
-        # Baris 37 yang sudah diperbaiki (tanpa double kurung)
-        return client.open_by_url("https://docs.google.com/spreadsheets/d/1tSnjFCjfR3_j8OeQP2nzS8IUgPO6tpeV6G3p5mtJraI/edit?usp=sharing")
+        
+        # MEMBUKA SHEETS MENGGUNAKAN ID (Lebih Aman & Stabil)
+        # ID diambil dari URL Google Sheets Abang
+        return client.open_by_key("1tSnjFCjfR3_j8OeQP2nzS8IUgPO6tpeV6G3p5mtJraI")
+        
     except Exception as e:
+        st.error(f"Koneksi Gagal: {e}")
         return None
 
 # Definisi Global
@@ -107,10 +116,11 @@ else:
     elif menu == "Data Pengiriman":
         st.subheader("📦 Daftar Kiriman")
         try:
-            df = pd.DataFrame(sh.worksheet("Data Active").get_all_records())
+            df = pd.DataFrame(sh.worksheet("Data Active").get_all_records)
             st.dataframe(df, use_container_width=True)
         except:
             st.warning("Tab 'Data Active' tidak ditemukan.")
+
 
 
 
