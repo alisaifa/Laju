@@ -34,7 +34,7 @@ def init_gsheets():
         creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["gcp_service_account"], scope)
         client = gspread.authorize(creds)
         # Buka Sheets (Sesuaikan URL jika berubah)
-        return client.open_by_url("https://docs.google.com/spreadsheets/d/1tSnjFCjfR3_j8OeQP2nzS8IUgPO6tpeV6G3p5mtJraI/edit?usp=sharing")
+        return client.open_by_url("https://docs.google.com/spreadsheets/d/1tSnjFCjfR3_j8OeQP2nzS8IUgPO6tpeV6G3p5mtJraI/edit?usp=sharing"))
     except Exception as e:
         return None
 
@@ -140,4 +140,5 @@ else:
                 """
                 st.markdown(label_html, unsafe_allow_html=True)
                 st.info("Gunakan fitur Print di Browser (Ctrl+P) untuk cetak.")
+
 
