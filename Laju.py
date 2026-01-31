@@ -66,7 +66,7 @@ if not st.session_state.logged_in:
         with st.container():
             # Menggunakan kolom 'Username' sesuai gambar terbaru Abang
             user_input = st.text_input("Username")
-            pw_input = st.text_input("Password", type="password")
+            pw_input = st.text_input("Password")
             
             if st.button("Masuk"):
                 try:
@@ -111,6 +111,7 @@ else:
             st.dataframe(df, use_container_width=True)
         except:
             st.warning("Tab 'Data Active' tidak ditemukan.")
+
 
 
 
