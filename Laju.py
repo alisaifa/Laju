@@ -33,7 +33,7 @@ def init_gsheets():
         # Mengambil kredensial dari st.secrets
         creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["gcp_service_account"], scope)
         client = gspread.authorize(creds)
-        # Buka Sheets (Sesuaikan URL jika berubah)
+        # Baris 37 yang sudah diperbaiki (tanpa double kurung)
         return client.open_by_url("https://docs.google.com/spreadsheets/d/1tSnjFCjfR3_j8OeQP2nzS8IUgPO6tpeV6G3p5mtJraI/edit?usp=sharing")
     except Exception as e:
         return None
@@ -64,18 +64,17 @@ if not st.session_state.logged_in:
         st.error("❌ Koneksi Gagal! Pastikan email robot sudah jadi 'Editor' di Google Sheets.")
     else:
         with st.container():
-            # Sesuaikan dengan nama kolom di Sheets: "Nama" atau "Username"
-            user_input = st.text_input("Username / Nama")
+            # Menggunakan kolom 'Username' sesuai gambar terbaru Abang
+            user_input = st.text_input("Username")
             pw_input = st.text_input("Password", type="password")
             
             if st.button("Masuk"):
                 try:
-                    # Ambil data dari tab 'User'
                     user_sheet = sh.worksheet("User").get_all_records()
                     df_user = pd.DataFrame(user_sheet)
                     
-                    # Cek kecocokan (menggunakan kolom 'Nama' sesuai gambar Sheets Abang)
-                    match = df_user[(df_user['Nama'] == user_input) & (df_user['Password'].astype(str) == pw_input)]
+                    # Mencocokkan Username dan Password
+                    match = df_user[(df_user['Username'] == user_input) & (df_user['Password'].astype(str) == pw_input)]
                     
                     if not match.empty:
                         st.session_state.logged_in = True
@@ -90,9 +89,9 @@ if not st.session_state.logged_in:
 else:
     with st.sidebar:
         st.header("🚄 LAJU SYSTEM")
-        st.write(f"Halo, **{st.session_state.user_data.get('Nama')}**")
+        st.write(f"Halo, **{st.session_state.user_data.get('Username')}**")
         st.write(f"Cabang: {st.session_state.user_data.get('Cabang')}")
-        menu = st.radio("Navigasi", ["Dashboard", "Data Pengiriman", "Cetak Label"])
+        menu = st.radio("Navigasi", ["Dashboard", "Data Pengiriman"])
         
         if st.button("Keluar"):
             st.session_state.logged_in = False
@@ -108,38 +107,7 @@ else:
     elif menu == "Data Pengiriman":
         st.subheader("📦 Daftar Kiriman")
         try:
-            # Pastikan nama tab di Sheets adalah 'Data Active'
             df = pd.DataFrame(sh.worksheet("Data Active").get_all_records())
             st.dataframe(df, use_container_width=True)
         except:
             st.warning("Tab 'Data Active' tidak ditemukan.")
-
-    elif menu == "Cetak Label":
-        st.subheader("🏷️ Cetak Alamat")
-        with st.form("label_form"):
-            nama_penerima = st.text_input("Nama Penerima")
-            alamat = st.text_area("Alamat Lengkap")
-            no_hp = st.text_input("No. HP")
-            resi_manual = f"LAJU{int(time.time())}"
-            
-            if st.form_submit_button("Generate Label"):
-                bcode = generate_barcode(resi_manual)
-                label_html = f"""
-                <div style="border: 2px solid #000; padding: 15px; background: #fff; color: #000; font-family: Arial;">
-                    <h3 style="margin:0;">🚄 LAJU EXPRESS</h3>
-                    <hr>
-                    <p style="margin:5px 0;"><b>PENERIMA:</b> {nama_penerima}</p>
-                    <p style="margin:5px 0;"><b>HP:</b> {no_hp}</p>
-                    <p style="margin:5px 0;"><b>ALAMAT:</b><br>{alamat}</p>
-                    <hr>
-                    <center>
-                        <img src="data:image/png;base64,{bcode}" width="180"><br>
-                        <small>{resi_manual}</small>
-                    </center>
-                </div>
-                """
-                st.markdown(label_html, unsafe_allow_html=True)
-                st.info("Gunakan fitur Print di Browser (Ctrl+P) untuk cetak.")
-
-
-
