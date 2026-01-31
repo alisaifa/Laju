@@ -26,7 +26,7 @@ def apply_theme(mode):
         .stButton>button {{ background-color: #000080; color: white; border-radius: 5px; }}
         .stButton>button:hover {{ border: 2px solid #FF8C00; }}
         </style>
-    """, unsafe_content_html=True)
+    """, unsafe_allow_html=True)
 
 # --- DATABASE CONNECTION ---
 def init_gsheets():
@@ -110,10 +110,10 @@ else:
         st.header("Dashboard Logistik")
         # Metric Cards
         col1, col2, col3, col4 = st.columns(4)
-        col1.markdown('<div class="metric-card">Total Paket<br><h2>124</h2></div>', unsafe_content_html=True)
-        col2.markdown('<div class="metric-card">Dikirim<br><h2>89</h2></div>', unsafe_content_html=True)
-        col3.markdown('<div class="metric-card">Transit<br><h2>20</h2></div>', unsafe_content_html=True)
-        col4.markdown('<div class="metric-card">Income<br><h2>Rp 2.4M</h2></div>', unsafe_content_html=True)
+        col1.markdown('<div class="metric-card">Total Paket<br><h2>124</h2></div>', unsafe_allow_html=True)
+        col2.markdown('<div class="metric-card">Dikirim<br><h2>89</h2></div>', unsafe_allow_html=True)
+        col3.markdown('<div class="metric-card">Transit<br><h2>20</h2></div>', unsafe_allow_html=True)
+        col4.markdown('<div class="metric-card">Income<br><h2>Rp 2.4M</h2></div>', unsafe_allow_html=True)
         
         st.divider()
         c1, c2, c3 = st.columns(3)
@@ -206,7 +206,8 @@ if st.session_state.get('page') == "Resi":
         <button onclick="window.print()">Print Resi</button>
     </div>
     """
-    st.markdown(resi_html, unsafe_content_html=True)
+    st.markdown(resi_html, unsafe_allow_html=True)
     if st.button("Kembali ke Dashboard"):
         st.session_state.page = "Dashboard"
+
         st.rerun()
