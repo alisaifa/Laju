@@ -111,3 +111,4 @@ else:
             st.dataframe(df, use_container_width=True)
         except:
             st.warning("Tab 'Data Active' tidak ditemukan.")
+
