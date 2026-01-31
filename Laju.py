@@ -140,3 +140,4 @@ else:
                 """
                 st.markdown(label_html, unsafe_allow_html=True)
                 st.info("Gunakan fitur Print di Browser (Ctrl+P) untuk cetak.")
+
